@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using undisclosed_back.Service;
 using FluentResults;
-using undisclosed_back.Service;
+using undisclosed_back.Models;
 
 
 namespace undisclosed_back.Controllers
@@ -25,8 +25,9 @@ namespace undisclosed_back.Controllers
         [HttpGet]
         public IActionResult  GetProfessions()
         {
-         Result professions = _professionService.GetProfessions();
-        return Ok(professions.Successes);
+         List<Professions> professions = _professionService.GetProfessions();
+        // return Ok(professions.Successes);
+        return Ok(professions);
     
         }
 
