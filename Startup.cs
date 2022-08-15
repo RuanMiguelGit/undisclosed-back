@@ -11,6 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using undisclosed_back.Data;
+using Microsoft.EntityFrameworkCore.Proxies;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using undisclosed_back.Service;
+
+
+
 
 namespace undisclosed_back
 {
@@ -26,13 +34,20 @@ namespace undisclosed_back
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<AppDbContext>(options => options.UseLazyLoadingProxies().UseMySQL(Configuration.GetConnectionString("UndisclosedConnection")));
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "undisclosed_back", Version = "v1" });
             });
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddScoped<ProfessionService, ProfessionService>();
+
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
